@@ -59,6 +59,6 @@ if __name__ == "__main__":
 
     print(f'{dict3}')
 
-    # запись в файл, когда пофиксю сборку строки с отрицательными элементами
-    # str_dict3 = make_str_from_equation(dict3)
-    # write_file(data=str_dict3, name='result.txt')
+    # запись в файл
+    str_dict3 = make_str_from_equation(dict3)
+    write_file(data=str_dict3, name='result.txt')

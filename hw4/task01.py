@@ -22,14 +22,6 @@ def make_str_from_equation(dict_equation: dict):
                     equation += '1 '
                 else:
                     equation += f'x**{i} + '
-            # нужно варианты >0 <0 =0 если <0, то резать последний + в строке
-            # elif dict_equation[i] == -1:
-            #     if i == 1:
-            #         equation += '- x + '
-            #     elif i == 0:
-            #         equation += '- 1 '
-            #     else:
-            #         equation += f'- x**{i} + '
             else:
                 if i == 1:
                     equation += f'{dict_equation[i]}*x + '
@@ -37,14 +29,17 @@ def make_str_from_equation(dict_equation: dict):
                     equation += f'{dict_equation[i]} '
                 else:
                     equation += f'{dict_equation[i]}*x**{i} + '
+    equation = equation.replace('+ -', '- ')  # обработка отрицательных
     return equation + '= 0'
 
 
 def make_equation(size: int):
     koef = {}
     for i in range(size + 1):
-        koef[i] = random.randint(0, 101)
+        koef[i] = random.randint(-100, 101)
     str_equation = make_str_from_equation(koef)
+    # print(koef)
+
     return str_equation
 
 
@@ -63,3 +58,7 @@ if __name__ == "__main__":
     data2 = make_equation(k2)
     print(data2)
     write_file(data=data2, name='taskB.txt')
+
+    # neg_dict = {0: -1, 1: 65, 2: -24, 3: -57, 4: 89, 5: -96}
+    # neg_equation = make_str_from_equation(neg_dict)
+    # print(neg_equation)
