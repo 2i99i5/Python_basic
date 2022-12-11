@@ -25,14 +25,12 @@ def game():
     lucky_flag = False  # счастливый флаг ИИ, если ходит первым, то выиграет
     players = [player_1, player_2]
 
-    first_turn = random.randint(-1, 0)
-    # можно и (0,1), но тогда много условий переделывать.
-    # Работает - не трогай
-    print(f'первым ходит: {players[first_turn + 1]}')
+    first_turn = random.randint(0, 1)
+    print(f'первым ходит: {players[first_turn]}')
 
     total = AMOUNT
     while total > 0:
-        first_turn += 1
+
         if players[first_turn % 2] == player_2:
             # ветка ИИ
             print(
@@ -66,8 +64,10 @@ def game():
                     f'\nЗа один ход можно взять {MAX_TURN} конфет, '
                     f'попробуй еще раз: '))
         total = total - step
+        first_turn += 1
 
-    return f'На столе осталось {total} конфет \nПобедил {players[first_turn % 2]}'
+    return f'На столе осталось {total} конфет ' \
+           f'\nПобедил {players[(first_turn % 2) - 1]}'
 
 
 if __name__ == "__main__":
