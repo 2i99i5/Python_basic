@@ -23,34 +23,47 @@ def choice_main_menu():
         except:
             print('Ошибка ввода! Некорректные данные!')
 
+
 def print_phone_book(phone_book: list):
     if len(phone_book) > 0:
         for id, contact in enumerate(phone_book):
-            print(id, *contact)
+            print(id + 1, *contact)
     else:
         print('Телефонная книга пуста или не загружена')
+
 
 def log_off():
     print('До свидания!')
 
+
 def load_success():
     print('Телефонная книга загружена')
+
 
 def save_success():
     print('Телефонная книга сохранена')
 
+
 def remove_success():
     print('Контакт удалён!')
 
-def input_new_contact():
-    name = input('Введите имя контакта:')
-    phone = input('Введите телефон контакта:')
-    comment = input('Введите комментарий к контакту:')
+
+def input_contact():
+    name = input('Введите имя контакта: ')
+    phone = input('Введите телефон контакта: ')
+    comment = input('Введите комментарий к контакту: ')
     return [name, phone, comment]
 
 
 def input_remove_contact():
-    id = int(input('Введите id контакта, который хотите удалить:'))
+    id = int(input('Введите id контакта, который хотите удалить: '))
     return id
 
 
+def input_change_contact():
+    id = int(input('Введите id контакта, который хотите изменить: '))
+    return id
+
+def find_text():
+    text = input('Введите текст, который хотите найти: ')
+    return text
