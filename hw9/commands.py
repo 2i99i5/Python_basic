@@ -57,7 +57,7 @@ async def bot_turn(message):
 
 async def player_turn(message):
     await bot.send_message(
-        message.from_user.id, text=f'{message.from_user.first_name} твой ход')
+        message.from_user.id, text=f'{message.from_user.first_name}, твой ход')
 
 
 @dp.message_handler(commands=['start'])
@@ -87,22 +87,26 @@ async def start_game(message: types.Message):
     game_flag = True
     total = CANDIES
     player_1 = message.from_user.first_name
-    # lucky_flag = False  # счастливый флаг ИИ, если ходит первым, то выиграет
-    # players = [player_1, player_2]
-    # first_turn = random.randint(0, 1)
-    # await bot.send_message(
-    #     message.from_user.id,
-    #     f'первым ходит: {players[first_turn]}'
-    # )
+
     await bot.send_message(
         message.from_user.id,
-        text=f'{message.from_user.first_name} начнём игру.\n'
+        text=f'{player_1} начнём игру.\n'
              f'На столе {CANDIES} конфет. Играют человек против ИИ. '
-             # f'Первый ход определяется жеребьёвкой.'
+             f'Первый ход определяется жеребьёвкой.'
              f'Каждый берёт по очереди не более {MAX_TURN} конфет.'
              f'Все конфеты оппонента достаются сделавшему последний ход.\n'
     )
-    await player_turn(message)
+    # lucky_flag = False  # счастливый флаг ИИ, если ходит первым, то выиграет
+    players = [player_1, 'Бот']
+    first_turn = random.randint(0, 1)
+    await bot.send_message(
+        message.from_user.id,
+        f'Первым ходит: {players[first_turn]}'
+    )
+    if players[first_turn] == player_1:
+        await player_turn(message)
+    else:
+        await bot_turn(message)
 
 
 @dp.message_handler()
@@ -132,10 +136,10 @@ async def anything(message: types.Message):
                     game_flag = False
             else:
                 await message.reply(
-                    f'{player_1} бери от 1 до {MAX_TURN}'
+                    f'{player_1}, бери от 1 до {MAX_TURN}'
                 )
         else:
             await bot.send_message(
                 message.from_user.id,
-                f'{player_1} напиши, сколько будешь брать конфет'
+                f'{player_1}, напиши, сколько будешь брать конфет'
             )
