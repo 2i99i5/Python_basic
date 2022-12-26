@@ -7,7 +7,7 @@ CANDIES = 150
 MAX_TURN = 28
 total = CANDIES
 game_flag = False
-lucky_flag = False
+# lucky_flag = False
 
 
 async def bot_turn(message):
@@ -58,17 +58,6 @@ async def bot_turn(message):
 async def player_turn(message):
     await bot.send_message(
         message.from_user.id, text=f'{message.from_user.first_name} твой ход')
-    # else:
-    # # ветка игрока
-    # step = int(input(
-    #     f'\nХодит {players[first_turn % 2]} \nНа столе {total} Бери: '))
-    # while step > MAX_TURN or step > total:
-    #     step = int(input(
-    #         f'\nЗа один ход можно взять {MAX_TURN} конфет, '
-    #         f'попробуй еще раз: '))
-
-    # total = total - step
-    # first_turn += 1
 
 
 @dp.message_handler(commands=['start'])
@@ -77,6 +66,7 @@ async def start_bot(message: types.Message):
         message.from_user.id,
         text=f'Для справки набери /help'
     )
+    print(f'{message.from_user.id} - {message.from_user.first_name}')
 
 
 @dp.message_handler(commands=['help'])
@@ -93,18 +83,17 @@ async def help_text(message: types.Message):
 async def start_game(message: types.Message):
     global game_flag
     global total
-    global lucky_flag
+    # global lucky_flag
     game_flag = True
     total = CANDIES
     player_1 = message.from_user.first_name
-    player_2 = 'PC'
-    lucky_flag = False  # счастливый флаг ИИ, если ходит первым, то выиграет
-    players = [player_1, player_2]
-    first_turn = random.randint(0, 1)
-    await bot.send_message(
-        message.from_user.id,
-        f'первым ходит: {players[first_turn]}'
-    )
+    # lucky_flag = False  # счастливый флаг ИИ, если ходит первым, то выиграет
+    # players = [player_1, player_2]
+    # first_turn = random.randint(0, 1)
+    # await bot.send_message(
+    #     message.from_user.id,
+    #     f'первым ходит: {players[first_turn]}'
+    # )
     await bot.send_message(
         message.from_user.id,
         text=f'{message.from_user.first_name} начнём игру.\n'
@@ -116,19 +105,16 @@ async def start_game(message: types.Message):
     await player_turn(message)
 
 
-
 @dp.message_handler()
 async def anything(message: types.Message):
     global total
     global game_flag
-    global lucky_flag
+    # global lucky_flag
     take = message.text
     player_1 = message.from_user.first_name
-    player_2 = 'PC'
 
     if game_flag:
         if message.text.isdigit():
-
             if 0 < int(take) <= MAX_TURN:
                 total -= int(take)
                 if total > 0:
@@ -138,22 +124,18 @@ async def anything(message: types.Message):
                         f'На столе осталось {total}'
                     )
                     await bot_turn(message)
-                    await player_turn(message)
                 else:
                     await bot.send_message(
                         message.from_user.id,
                         f'{player_1} победил!'
                     )
+                    game_flag = False
             else:
                 await message.reply(
-                    f'{player_1} да ты жадина, '
-                    f'не хочешь ли взять поменьше?'
+                    f'{player_1} бери от 1 до {MAX_TURN}'
                 )
         else:
             await bot.send_message(
                 message.from_user.id,
                 f'{player_1} напиши, сколько будешь брать конфет'
             )
-
-        # return f'На столе осталось {total} конфет ' \
-        #        f'\nПобедил {players[(first_turn % 2) - 1]}'
